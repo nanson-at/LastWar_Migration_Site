@@ -180,40 +180,26 @@ document.addEventListener('DOMContentLoaded', () => {
         data.timestamp = new Date().toISOString();
         data.language = currentLang;
 
-        /*
-           IMPORTANT: The user needs to deploy a Google Apps Script as a web app
-           and put the executable URL here.
-        */
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpEDk7a_ZX0TnRjAfyQVIPdclPOOUkB4oNMJeZSKfVCyn5-Suabio7EB9-JdMi3B_C/exec";
-
-        if (GOOGLE_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbxpEDk7a_ZX0TnRjAfyQVIPdclPOOUkB4oNMJeZSKfVCyn5-Suabio7EB9-JdMi3B_C/exec") {
-            // Demo mode - simulate success if URL is not set
-            setTimeout(() => {
-                showStatus(i18n[currentLang].success, 'success');
-                submitBtn.disabled = false;
-                submitBtn.textContent = i18n[currentLang].submit;
-                form.reset();
-                console.log("Mock submission success:", data);
-            }, 1500);
-            return;
-        }
-
         try {
-            const response = await fetch(GOOGLE_SCRIPT_URL, {
+            // Call our Cloudflare Pages Function proxy
+            const response = await fetch('/submit', {
                 method: 'POST',
-                mode: 'no-cors', // standard for GAS web apps cross-origin
-                cache: 'no-cache',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
 
-            // Since no-cors doesn't return response body, we assume success if no error thrown
-            showStatus(i18n[currentLang].success, 'success');
-            form.reset();
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                showStatus(i18n[currentLang].success, 'success');
+                form.reset();
+            } else {
+                throw new Error(result.message || 'Submission failed');
+            }
         } catch (err) {
-            console.error(err);
+            console.error("Submission error:", err);
             showStatus(i18n[currentLang].error, 'error');
         } finally {
             submitBtn.disabled = false;
