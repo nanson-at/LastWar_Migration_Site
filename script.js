@@ -190,6 +190,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(data)
             });
 
+            const contentType = response.headers.get("content-type");
+
+            // If not JSON, it might be a 404 or a server error (HTML)
+            if (!contentType || !contentType.includes("application/json")) {
+                const rawText = await response.text();
+                console.error("Server returned non-JSON content:", rawText);
+                throw new Error(`Invalid response format. Status: ${response.status}`);
+            }
+
             const result = await response.json();
 
             if (result.status === 'success') {
@@ -199,8 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.message || 'Submission failed');
             }
         } catch (err) {
-            console.error("Submission error:", err);
-            showStatus(i18n[currentLang].error, 'error');
+            console.error("Submission error details:", err);
+            // Show more helpful error in UI
+            showStatus(i18n[currentLang].error + " (Debug: " + err.message + ")", 'error');
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = i18n[currentLang].submit;
