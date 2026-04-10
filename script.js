@@ -108,7 +108,6 @@ function setLanguage(lang) {
     
     // Update elements
     document.getElementById('title').textContent = t.title;
-    document.getElementById('title').setAttribute('data-text', t.title);
     document.getElementById('subtitle').textContent = t.subtitle;
     document.getElementById('lbl-nickname').textContent = t.nickname;
     document.getElementById('lbl-server').textContent = t.server;
