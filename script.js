@@ -105,7 +105,7 @@ function setLanguage(lang) {
     document.body.setAttribute('lang', lang);
 
     const t = i18n[lang];
-    
+
     // Update elements
     document.getElementById('title').textContent = t.title;
     document.getElementById('title').setAttribute('data-text', t.title);
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         submitBtn.disabled = true;
         submitBtn.textContent = i18n[currentLang].submitting;
         statusMsg.classList.add('hidden');
@@ -184,9 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
            IMPORTANT: The user needs to deploy a Google Apps Script as a web app
            and put the executable URL here.
         */
-        const GOOGLE_SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_URL_HERE";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpEDk7a_ZX0TnRjAfyQVIPdclPOOUkB4oNMJeZSKfVCyn5-Suabio7EB9-JdMi3B_C/exec";
 
-        if (GOOGLE_SCRIPT_URL === "YOUR_GOOGLE_SCRIPT_URL_HERE") {
+        if (GOOGLE_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbxpEDk7a_ZX0TnRjAfyQVIPdclPOOUkB4oNMJeZSKfVCyn5-Suabio7EB9-JdMi3B_C/exec") {
             // Demo mode - simulate success if URL is not set
             setTimeout(() => {
                 showStatus(i18n[currentLang].success, 'success');
