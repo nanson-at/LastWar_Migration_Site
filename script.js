@@ -24,11 +24,11 @@ const i18n = {
         submitting: "SUBMITTING...",
         totalApps: "TOTAL COMMANDERS",
         statsBtn: "STATS",
-        modalTitle: "BATTLE STATUS",
-        goldTier: "GOLD COLOR",
-        purpleTier: "PURPLE COLOR",
-        blueTier: "BLUE COLOR",
-        whiteTier: "WHITE COLOR",
+        modalTitle: "IMMIGRATION STATUS",
+        goldTier: "GOLD SEATS",
+        purpleTier: "PURPLE SEATS",
+        blueTier: "BLUE SEATS",
+        whiteTier: "WHITE SEATS",
         intelFooter: "REAL-TIME INTEL FROM SECTOR 561"
     },
     ja: {
@@ -52,10 +52,10 @@ const i18n = {
         totalApps: "指揮官総数",
         statsBtn: "統計",
         modalTitle: "移民状況",
-        goldTier: "金色",
-        purpleTier: "紫色",
-        blueTier: "青色",
-        whiteTier: "白色",
+        goldTier: "金色枠",
+        purpleTier: "紫色枠",
+        blueTier: "青色枠",
+        whiteTier: "白色枠",
         intelFooter: "サーバー561のリアルタイム情報"
     },
     zh: {
@@ -79,10 +79,10 @@ const i18n = {
         totalApps: "指揮官人數",
         statsBtn: "統計數據",
         modalTitle: "戰況情報",
-        goldTier: "金色",
-        purpleTier: "紫色",
-        blueTier: "藍色",
-        whiteTier: "白色",
+        goldTier: "金色名額",
+        purpleTier: "紫色名額",
+        blueTier: "藍色名額",
+        whiteTier: "白色名額",
         intelFooter: "來自 561 伺服器的實時資訊"
     },
     ko: {
@@ -165,14 +165,18 @@ function setLanguage(lang) {
     document.getElementById('lbl-remarks').textContent = t.remarks;
     document.getElementById('btn-submit').textContent = t.submit;
     document.getElementById('lbl-total-apps').textContent = t.totalApps;
+    document.getElementById('lbl-floating-desc').textContent = t.totalApps;
     
     // Dashboard translations
+    // Dashboard translations
     document.getElementById('modal-title').textContent = t.modalTitle;
+    document.getElementById('modal-title').setAttribute('data-text', t.modalTitle);
     document.getElementById('lbl-gold').textContent = t.goldTier;
     document.getElementById('lbl-purple').textContent = t.purpleTier;
     document.getElementById('lbl-blue').textContent = t.blueTier;
     document.getElementById('lbl-white').textContent = t.whiteTier;
     document.getElementById('lbl-footer-intel').textContent = t.intelFooter;
+    document.getElementById('lbl-floating-desc').textContent = t.totalApps;
 
     // Placeholders
     document.getElementById('nickname').placeholder = t.placeholder_nickname;
@@ -218,6 +222,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Dashboard Modal Toggle
+    const overlay = document.getElementById('dashboard-overlay');
+    const toggleBtn = document.getElementById('dashboard-toggle');
+    const closeBtn = document.getElementById('modal-close');
+
+    toggleBtn.addEventListener('click', () => {
+        overlay.classList.add('open');
+    });
+
+    closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('open');
+    });
+
+    // Close on outside click (click overlay background)
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.classList.remove('open');
+        }
+    });
+
     const limits = {
         Gold: 1,
         Purple: 5,
@@ -235,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update UI
             document.getElementById('val-total-apps').textContent = stats.total || 0;
+            document.getElementById('val-floating-total').textContent = stats.total || 0;
 
             updateStat('gold', stats.Gold || 0, limits.Gold);
             updateStat('purple', stats.Purple || 0, limits.Purple);
