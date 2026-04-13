@@ -34,62 +34,57 @@
             <p id="subtitle">サーバー561 RUN x HUG連盟のエリート部隊に参加しましょう。今すぐ申請を。</p>
         </section>
 
-        <!-- Floating Dashboard Toggle -->
-        <button id="dashboard-toggle" class="floating-btn">
-            <span class="icon">📊</span>
-            <span class="btn-text" id="btn-stats-text">STATS</span>
-        </button>
-
-        <!-- Dashboard Modal Overlay -->
-        <div id="dashboard-overlay" class="modal-overlay">
-            <aside id="dashboard-modal" class="dashboard-modal">
-                <div class="modal-header">
-                    <h2 id="modal-title" class="glitch-text" data-text="BATTLE STATUS">BATTLE STATUS</h2>
-                    <button id="modal-close">&times;</button>
+        <!-- Integrated Dashboard Container -->
+        <section class="dashboard-section">
+            <div class="dashboard-header-inline">
+                <h2 id="modal-title">BATTLE STATUS</h2>
+            </div>
+            
+            <div class="main-stats-inline">
+                <div class="total-stats-card">
+                    <span class="stat-label" id="lbl-total-apps">TOTAL COMMANDERS</span>
+                    <span class="stat-value" id="val-total-apps">--</span>
                 </div>
-                <div class="modal-content">
-                    <div class="main-stats">
-                        <div class="total-stats-card">
-                            <span class="stat-label" id="lbl-total-apps">TOTAL COMMANDERS</span>
-                            <span class="stat-value" id="val-total-apps">--</span>
-                        </div>
-                    </div>
-                    
-                    <div class="tiers-grid">
-                        <!-- Gold Tier -->
-                        <div class="tier-card tier-gold" id="stat-gold">
-                            <div class="tier-label" id="lbl-gold">GOLD TIER</div>
-                            <div class="tier-value"><span id="val-gold">0</span> / 1</div>
-                            <div class="tier-progress"><div class="fill"></div></div>
-                        </div>
-
-                        <!-- Purple Tier -->
-                        <div class="tier-card tier-purple" id="stat-purple">
-                            <div class="tier-label" id="lbl-purple">PURPLE TIER</div>
-                            <div class="tier-value"><span id="val-purple">0</span> / 5</div>
-                            <div class="tier-progress"><div class="fill"></div></div>
-                        </div>
-
-                        <!-- Blue Tier -->
-                        <div class="tier-card tier-blue" id="stat-blue">
-                            <div class="tier-label" id="lbl-blue">BLUE TIER</div>
-                            <div class="tier-value"><span id="val-blue">0</span> / 50</div>
-                            <div class="tier-progress"><div class="fill"></div></div>
-                        </div>
-
-                        <!-- White Tier -->
-                        <div class="tier-card tier-white" id="stat-white">
-                            <div class="tier-label" id="lbl-white">WHITE TIER</div>
-                            <div class="tier-value"><span id="val-white">0</span> / 80</div>
-                            <div class="tier-progress"><div class="fill"></div></div>
-                        </div>
-                    </div>
+            </div>
+            
+            <div class="tiers-grid">
+                <!-- Gold Tier -->
+                <div class="tier-card tier-gold" id="stat-gold">
+                    <div class="tier-orb"></div>
+                    <div class="tier-label" id="lbl-gold">金色</div>
+                    <div class="tier-value"><span id="val-gold">0</span> / 1</div>
+                    <div class="tier-progress"><div class="fill"></div></div>
                 </div>
-                <div class="modal-footer">
-                    <p id="lbl-footer-intel">REAL-TIME INTEL FROM SECTOR 561</p>
+
+                <!-- Purple Tier -->
+                <div class="tier-card tier-purple" id="stat-purple">
+                    <div class="tier-orb"></div>
+                    <div class="tier-label" id="lbl-purple">紫色</div>
+                    <div class="tier-value"><span id="val-purple">0</span> / 5</div>
+                    <div class="tier-progress"><div class="fill"></div></div>
                 </div>
-            </aside>
-        </div>
+
+                <!-- Blue Tier -->
+                <div class="tier-card tier-blue" id="stat-blue">
+                    <div class="tier-orb"></div>
+                    <div class="tier-label" id="lbl-blue">藍色</div>
+                    <div class="tier-value"><span id="val-blue">0</span> / 50</div>
+                    <div class="tier-progress"><div class="fill"></div></div>
+                </div>
+
+                <!-- White Tier -->
+                <div class="tier-card tier-white" id="stat-white">
+                    <div class="tier-orb"></div>
+                    <div class="tier-label" id="lbl-white">白色</div>
+                    <div class="tier-value"><span id="val-white">0</span> / 80</div>
+                    <div class="tier-progress"><div class="fill"></div></div>
+                </div>
+            </div>
+
+            <div class="dashboard-footer-inline">
+                <p id="lbl-footer-intel">REAL-TIME INTEL FROM SECTOR 561</p>
+            </div>
+        </section>
 
 
         <section class="form-container">

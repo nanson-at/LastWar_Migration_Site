@@ -1,5 +1,5 @@
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpEDk7a_ZX0TnRjAfyQVIPdclPOOUkB4oNMJeZSKfVCyn5-Suabio7EB9-JdMi3B_C/exec";
-const API_ENDPOINT = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+const API_ENDPOINT = !window.location.hostname || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? GOOGLE_SCRIPT_URL
     : '/submit';
 
@@ -25,10 +25,10 @@ const i18n = {
         totalApps: "TOTAL COMMANDERS",
         statsBtn: "STATS",
         modalTitle: "BATTLE STATUS",
-        goldTier: "GOLD TIER",
-        purpleTier: "PURPLE TIER",
-        blueTier: "BLUE TIER",
-        whiteTier: "WHITE TIER",
+        goldTier: "GOLD COLOR",
+        purpleTier: "PURPLE COLOR",
+        blueTier: "BLUE COLOR",
+        whiteTier: "WHITE COLOR",
         intelFooter: "REAL-TIME INTEL FROM SECTOR 561"
     },
     ja: {
@@ -52,10 +52,10 @@ const i18n = {
         totalApps: "指揮官総数",
         statsBtn: "統計",
         modalTitle: "移民状況",
-        goldTier: "ゴールド頻",
-        purpleTier: "パープル頻",
-        blueTier: "ブルー頻",
-        whiteTier: "ホワイト頻",
+        goldTier: "金色",
+        purpleTier: "紫色",
+        blueTier: "青色",
+        whiteTier: "白色",
         intelFooter: "サーバー561のリアルタイム情報"
     },
     zh: {
@@ -79,10 +79,10 @@ const i18n = {
         totalApps: "指揮官人數",
         statsBtn: "統計數據",
         modalTitle: "戰況情報",
-        goldTier: "金頻",
-        purpleTier: "紫頻",
-        blueTier: "藍頻",
-        whiteTier: "白頻",
+        goldTier: "金色",
+        purpleTier: "紫色",
+        blueTier: "藍色",
+        whiteTier: "白色",
         intelFooter: "來自 561 伺服器的實時資訊"
     },
     ko: {
@@ -167,9 +167,7 @@ function setLanguage(lang) {
     document.getElementById('lbl-total-apps').textContent = t.totalApps;
     
     // Dashboard translations
-    document.getElementById('btn-stats-text').textContent = t.statsBtn;
     document.getElementById('modal-title').textContent = t.modalTitle;
-    document.getElementById('modal-title').setAttribute('data-text', t.modalTitle);
     document.getElementById('lbl-gold').textContent = t.goldTier;
     document.getElementById('lbl-purple').textContent = t.purpleTier;
     document.getElementById('lbl-blue').textContent = t.blueTier;
@@ -218,26 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
             opt.classList.add('active');
             colorInput.value = opt.getAttribute('data-color');
         });
-    });
-
-    // Dashboard Modal Toggle
-    const overlay = document.getElementById('dashboard-overlay');
-    const toggleBtn = document.getElementById('dashboard-toggle');
-    const closeBtn = document.getElementById('modal-close');
-
-    toggleBtn.addEventListener('click', () => {
-        overlay.classList.add('open');
-    });
-
-    closeBtn.addEventListener('click', () => {
-        overlay.classList.remove('open');
-    });
-
-    // Close on outside click (click overlay background)
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            overlay.classList.remove('open');
-        }
     });
 
     const limits = {
