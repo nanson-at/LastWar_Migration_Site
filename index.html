@@ -34,54 +34,62 @@
             <p id="subtitle">サーバー561 RUN x HUG連盟のエリート部隊に参加しましょう。今すぐ申請を。</p>
         </section>
 
-        <section class="dashboard-container">
-            <div class="dashboard-card total-card">
-                <span class="label" id="lbl-total-apps">Total Applications</span>
-                <span class="value" id="val-total-apps">--</span>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-item" id="stat-gold">
-                    <div class="stat-header">
-                        <span class="color-dot" style="background: #ffcc00;"></span>
-                        <span class="color-name">GOLD</span>
+        <!-- Floating Dashboard Toggle -->
+        <button id="dashboard-toggle" class="floating-btn">
+            <span class="icon">📊</span>
+            <span class="btn-text" id="btn-stats-text">STATS</span>
+        </button>
+
+        <!-- Dashboard Modal Overlay -->
+        <div id="dashboard-overlay" class="modal-overlay">
+            <aside id="dashboard-modal" class="dashboard-modal">
+                <div class="modal-header">
+                    <h2 id="modal-title" class="glitch-text" data-text="BATTLE STATUS">BATTLE STATUS</h2>
+                    <button id="modal-close">&times;</button>
+                </div>
+                <div class="modal-content">
+                    <div class="main-stats">
+                        <div class="total-stats-card">
+                            <span class="stat-label" id="lbl-total-apps">TOTAL COMMANDERS</span>
+                            <span class="stat-value" id="val-total-apps">--</span>
+                        </div>
                     </div>
-                    <div class="stat-body">
-                        <span class="stat-value" id="val-gold">0</span>
-                        <span class="stat-limit">/ 1</span>
+                    
+                    <div class="tiers-grid">
+                        <!-- Gold Tier -->
+                        <div class="tier-card tier-gold" id="stat-gold">
+                            <div class="tier-label" id="lbl-gold">GOLD TIER</div>
+                            <div class="tier-value"><span id="val-gold">0</span> / 1</div>
+                            <div class="tier-progress"><div class="fill"></div></div>
+                        </div>
+
+                        <!-- Purple Tier -->
+                        <div class="tier-card tier-purple" id="stat-purple">
+                            <div class="tier-label" id="lbl-purple">PURPLE TIER</div>
+                            <div class="tier-value"><span id="val-purple">0</span> / 5</div>
+                            <div class="tier-progress"><div class="fill"></div></div>
+                        </div>
+
+                        <!-- Blue Tier -->
+                        <div class="tier-card tier-blue" id="stat-blue">
+                            <div class="tier-label" id="lbl-blue">BLUE TIER</div>
+                            <div class="tier-value"><span id="val-blue">0</span> / 50</div>
+                            <div class="tier-progress"><div class="fill"></div></div>
+                        </div>
+
+                        <!-- White Tier -->
+                        <div class="tier-card tier-white" id="stat-white">
+                            <div class="tier-label" id="lbl-white">WHITE TIER</div>
+                            <div class="tier-value"><span id="val-white">0</span> / 80</div>
+                            <div class="tier-progress"><div class="fill"></div></div>
+                        </div>
                     </div>
                 </div>
-                <div class="stat-item" id="stat-purple">
-                    <div class="stat-header">
-                        <span class="color-dot" style="background: #c300ff;"></span>
-                        <span class="color-name">PURPLE</span>
-                    </div>
-                    <div class="stat-body">
-                        <span class="stat-value" id="val-purple">0</span>
-                        <span class="stat-limit">/ 5</span>
-                    </div>
+                <div class="modal-footer">
+                    <p id="lbl-footer-intel">REAL-TIME INTEL FROM SECTOR 561</p>
                 </div>
-                <div class="stat-item" id="stat-blue">
-                    <div class="stat-header">
-                        <span class="color-dot" style="background: #00f2ff;"></span>
-                        <span class="color-name">BLUE</span>
-                    </div>
-                    <div class="stat-body">
-                        <span class="stat-value" id="val-blue">0</span>
-                        <span class="stat-limit">/ 50</span>
-                    </div>
-                </div>
-                <div class="stat-item" id="stat-white">
-                    <div class="stat-header">
-                        <span class="color-dot" style="background: #ffffff;"></span>
-                        <span class="color-name">WHITE</span>
-                    </div>
-                    <div class="stat-body">
-                        <span class="stat-value" id="val-white">0</span>
-                        <span class="stat-limit">/ 80</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </aside>
+        </div>
 
 
         <section class="form-container">

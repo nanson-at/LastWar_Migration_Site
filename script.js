@@ -22,7 +22,14 @@ const i18n = {
         success: "Application submitted successfully! Our recruiters will contact you soon.",
         error: "An error occurred. Please try again later.",
         submitting: "SUBMITTING...",
-        totalApps: "TOTAL APPLICATIONS"
+        totalApps: "TOTAL COMMANDERS",
+        statsBtn: "STATS",
+        modalTitle: "BATTLE STATUS",
+        goldTier: "GOLD TIER",
+        purpleTier: "PURPLE TIER",
+        blueTier: "BLUE TIER",
+        whiteTier: "WHITE TIER",
+        intelFooter: "REAL-TIME INTEL FROM SECTOR 561"
     },
     ja: {
         title: "SS6-移民申請フォーム",
@@ -42,7 +49,14 @@ const i18n = {
         success: "申請が完了しました！担当者からの連絡をお待ちください。",
         error: "エラーが発生しました。後でもう一度試してください。",
         submitting: "送信中...",
-        totalApps: "現在の申請総数"
+        totalApps: "指揮官総数",
+        statsBtn: "統計",
+        modalTitle: "移民状況",
+        goldTier: "ゴールド頻",
+        purpleTier: "パープル頻",
+        blueTier: "ブルー頻",
+        whiteTier: "ホワイト頻",
+        intelFooter: "サーバー561のリアルタイム情報"
     },
     zh: {
         title: "SS6-移民申請表",
@@ -62,7 +76,14 @@ const i18n = {
         success: "申請已成功提交！招募官將盡快與您聯繫。",
         error: "發生錯誤。請稍後再試。",
         submitting: "提交中...",
-        totalApps: "目前申請總數"
+        totalApps: "指揮官人數",
+        statsBtn: "統計數據",
+        modalTitle: "戰況情報",
+        goldTier: "金頻",
+        purpleTier: "紫頻",
+        blueTier: "藍頻",
+        whiteTier: "白頻",
+        intelFooter: "來自 561 伺服器的實時資訊"
     },
     ko: {
         title: "SS6-이민 신청서",
@@ -82,7 +103,14 @@ const i18n = {
         success: "신청서가 성공적으로 제출되었습니다! 담당자가 곧 연락드리겠습니다.",
         error: "오류가 발생했습니다. 나중에 다시 시도하세요.",
         submitting: "제출 중...",
-        totalApps: "현재 총 신청 수"
+        totalApps: "지휘관 총수",
+        statsBtn: "통계",
+        modalTitle: "이민 현황",
+        goldTier: "골드",
+        purpleTier: "퍼플",
+        blueTier: "블루",
+        whiteTier: "화이트",
+        intelFooter: "561 서버 실시간 정보"
     },
     th: {
         title: "SS6-แบบ폼ย้ายเซิร์ฟเวอร์",
@@ -102,7 +130,14 @@ const i18n = {
         success: "ส่งใบสมัครเรียบร้อยแล้ว! ฝ่ายรับสมัครจะติดต่อคุณกลับโดยเร็ว",
         error: "เกิดข้อผิดพลาด โปรดลองอีกครั้งภายหลัง",
         submitting: "กำลังส่ง...",
-        totalApps: "จำนวนผู้สมัครทั้งหมด"
+        totalApps: "จำนวนผู้บัญชาการทหาร",
+        statsBtn: "สถิติ",
+        modalTitle: "สถานะการย้าย",
+        goldTier: "สีทอง",
+        purpleTier: "สีม่วง",
+        blueTier: "สีฟ้า",
+        whiteTier: "สีขาว",
+        intelFooter: "ข้อมูลเรียลไทม์จากเซิร์ฟเวอร์ 561"
     }
 };
 
@@ -130,6 +165,16 @@ function setLanguage(lang) {
     document.getElementById('lbl-remarks').textContent = t.remarks;
     document.getElementById('btn-submit').textContent = t.submit;
     document.getElementById('lbl-total-apps').textContent = t.totalApps;
+    
+    // Dashboard translations
+    document.getElementById('btn-stats-text').textContent = t.statsBtn;
+    document.getElementById('modal-title').textContent = t.modalTitle;
+    document.getElementById('modal-title').setAttribute('data-text', t.modalTitle);
+    document.getElementById('lbl-gold').textContent = t.goldTier;
+    document.getElementById('lbl-purple').textContent = t.purpleTier;
+    document.getElementById('lbl-blue').textContent = t.blueTier;
+    document.getElementById('lbl-white').textContent = t.whiteTier;
+    document.getElementById('lbl-footer-intel').textContent = t.intelFooter;
 
     // Placeholders
     document.getElementById('nickname').placeholder = t.placeholder_nickname;
@@ -175,6 +220,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Dashboard Modal Toggle
+    const overlay = document.getElementById('dashboard-overlay');
+    const toggleBtn = document.getElementById('dashboard-toggle');
+    const closeBtn = document.getElementById('modal-close');
+
+    toggleBtn.addEventListener('click', () => {
+        overlay.classList.add('open');
+    });
+
+    closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('open');
+    });
+
+    // Close on outside click (click overlay background)
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.classList.remove('open');
+        }
+    });
+
     const limits = {
         Gold: 1,
         Purple: 5,
@@ -207,9 +272,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateStat(id, value, limit) {
         const valueEl = document.getElementById(`val-${id}`);
         const container = document.getElementById(`stat-${id}`);
-
+        const progressFill = container.querySelector('.fill');
+        
         valueEl.textContent = value;
-
+        
+        // Update progress bar
+        const percentage = Math.min((value / limit) * 100, 100);
+        progressFill.style.width = `${percentage}%`;
+        
         if (value >= limit) {
             container.classList.add('limit-exceeded');
         } else {
