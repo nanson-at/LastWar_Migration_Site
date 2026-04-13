@@ -1,3 +1,8 @@
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpEDk7a_ZX0TnRjAfyQVIPdclPOOUkB4oNMJeZSKfVCyn5-Suabio7EB9-JdMi3B_C/exec";
+const API_ENDPOINT = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? GOOGLE_SCRIPT_URL
+    : '/submit';
+
 const i18n = {
     en: {
         title: "SS6-MIGRATION APPLICATION",
@@ -16,7 +21,8 @@ const i18n = {
         placeholder_remarks: "Any additional information...",
         success: "Application submitted successfully! Our recruiters will contact you soon.",
         error: "An error occurred. Please try again later.",
-        submitting: "SUBMITTING..."
+        submitting: "SUBMITTING...",
+        totalApps: "TOTAL APPLICATIONS"
     },
     ja: {
         title: "SS6-移民申請フォーム",
@@ -35,7 +41,8 @@ const i18n = {
         placeholder_remarks: "その他の情報...",
         success: "申請が完了しました！担当者からの連絡をお待ちください。",
         error: "エラーが発生しました。後でもう一度試してください。",
-        submitting: "送信中..."
+        submitting: "送信中...",
+        totalApps: "現在の申請総数"
     },
     zh: {
         title: "SS6-移民申請表",
@@ -54,7 +61,8 @@ const i18n = {
         placeholder_remarks: "其他備註事項...",
         success: "申請已成功提交！招募官將盡快與您聯繫。",
         error: "發生錯誤。請稍後再試。",
-        submitting: "提交中..."
+        submitting: "提交中...",
+        totalApps: "目前申請總數"
     },
     ko: {
         title: "SS6-이민 신청서",
@@ -73,7 +81,8 @@ const i18n = {
         placeholder_remarks: "추가 정보...",
         success: "신청서가 성공적으로 제출되었습니다! 담당자가 곧 연락드리겠습니다.",
         error: "오류가 발생했습니다. 나중에 다시 시도하세요.",
-        submitting: "제출 중..."
+        submitting: "제출 중...",
+        totalApps: "현재 총 신청 수"
     },
     th: {
         title: "SS6-แบบ폼ย้ายเซิร์ฟเวอร์",
@@ -92,7 +101,8 @@ const i18n = {
         placeholder_remarks: "ข้อมูลเพิ่มเติม...",
         success: "ส่งใบสมัครเรียบร้อยแล้ว! ฝ่ายรับสมัครจะติดต่อคุณกลับโดยเร็ว",
         error: "เกิดข้อผิดพลาด โปรดลองอีกครั้งภายหลัง",
-        submitting: "กำลังส่ง..."
+        submitting: "กำลังส่ง...",
+        totalApps: "จำนวนผู้สมัครทั้งหมด"
     }
 };
 
@@ -119,6 +129,7 @@ function setLanguage(lang) {
     document.getElementById('lbl-hqLevel').textContent = t.hqLevel;
     document.getElementById('lbl-remarks').textContent = t.remarks;
     document.getElementById('btn-submit').textContent = t.submit;
+    document.getElementById('lbl-total-apps').textContent = t.totalApps;
 
     // Placeholders
     document.getElementById('nickname').placeholder = t.placeholder_nickname;
@@ -138,6 +149,7 @@ function setLanguage(lang) {
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     setLanguage(currentLang);
+    fetchStats();
 
     // Lang buttons event
     document.querySelectorAll('.lang-switcher button').forEach(btn => {
@@ -163,6 +175,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const limits = {
+        Gold: 1,
+        Purple: 5,
+        Blue: 50,
+        White: 80
+    };
+
+    async function fetchStats() {
+        try {
+            // Using the dynamic endpoint (handles Local and CF)
+            const response = await fetch(API_ENDPOINT);
+            if (!response.ok) throw new Error('Failed to fetch stats');
+
+            const stats = await response.json();
+
+            // Update UI
+            document.getElementById('val-total-apps').textContent = stats.total || 0;
+
+            updateStat('gold', stats.Gold || 0, limits.Gold);
+            updateStat('purple', stats.Purple || 0, limits.Purple);
+            updateStat('blue', stats.Blue || 0, limits.Blue);
+            updateStat('white', stats.White || 0, limits.White);
+
+        } catch (err) {
+            console.error("Dashboard error:", err);
+            // Don't disturb the user with dashboard fetch errors
+        }
+    }
+
+    function updateStat(id, value, limit) {
+        const valueEl = document.getElementById(`val-${id}`);
+        const container = document.getElementById(`stat-${id}`);
+
+        valueEl.textContent = value;
+
+        if (value >= limit) {
+            container.classList.add('limit-exceeded');
+        } else {
+            container.classList.remove('limit-exceeded');
+        }
+    }
+
     // Form Submission
     const form = document.getElementById('migrationForm');
     const statusMsg = document.getElementById('statusMessage');
@@ -181,11 +235,11 @@ document.addEventListener('DOMContentLoaded', () => {
         data.language = currentLang;
 
         try {
-            // Call our Cloudflare Pages Function proxy
-            const response = await fetch('/submit', {
+            // Call our Cloudflare Pages Function proxy or direct Google Script
+            const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'text/plain;charset=utf-8' // Using text/plain to avoid CORS preflight locally
                 },
                 body: JSON.stringify(data)
             });
@@ -204,6 +258,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.status === 'success') {
                 showStatus(i18n[currentLang].success, 'success');
                 form.reset();
+                // Reset color selector to default
+                colorOpts[0].click();
+                // Refresh dashboard
+                fetchStats();
             } else {
                 throw new Error(result.message || 'Submission failed');
             }
