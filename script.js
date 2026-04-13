@@ -250,26 +250,43 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     async function fetchStats() {
-        try {
-            // Using the dynamic endpoint (handles Local and CF)
-            const response = await fetch(API_ENDPOINT);
-            if (!response.ok) throw new Error('Failed to fetch stats');
-
-            const stats = await response.json();
-
-            // Update UI
-            document.getElementById('val-total-apps').textContent = stats.total || 0;
-            document.getElementById('val-floating-total').textContent = stats.total || 0;
-
-            updateStat('gold', stats.Gold || 0, limits.Gold);
-            updateStat('purple', stats.Purple || 0, limits.Purple);
-            updateStat('blue', stats.Blue || 0, limits.Blue);
-            updateStat('white', stats.White || 0, limits.White);
-
-        } catch (err) {
-            console.error("Dashboard error:", err);
-            // Don't disturb the user with dashboard fetch errors
+        // Try to load cached data first for instant display
+        const cachedData = localStorage.getItem('last_migration_stats');
+        if (cachedData) {
+            try {
+                const stats = JSON.parse(cachedData);
+                updateUIWithStats(stats);
+            } catch (e) {}
         }
+
+        try {
+            const response = await fetch(`${API_ENDPOINT}?type=stats`);
+            const stats = await response.json();
+            
+            // Update local storage
+            localStorage.setItem('last_migration_stats', JSON.stringify(stats));
+            
+            // Update real UI
+            updateUIWithStats(stats);
+        } catch (error) {
+            console.error("Error fetching stats:", error);
+        }
+    }
+
+    function updateUIWithStats(stats) {
+        if (!stats) return;
+
+        // Update counts
+        const valTotal = document.getElementById('val-total-apps');
+        const valFloating = document.getElementById('val-floating-total');
+        
+        if (valTotal) valTotal.textContent = stats.total || 0;
+        if (valFloating) valFloating.textContent = stats.total || 0;
+
+        updateStat('gold', stats.Gold || 0, limits.Gold);
+        updateStat('purple', stats.Purple || 0, limits.Purple);
+        updateStat('blue', stats.Blue || 0, limits.Blue);
+        updateStat('white', stats.White || 0, limits.White);
     }
 
     function updateStat(id, value, limit) {

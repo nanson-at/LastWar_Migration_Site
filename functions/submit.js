@@ -18,8 +18,9 @@ export async function onRequest(context) {
         headers: { "Content-Type": "application/json" }
       });
     } else {
-      // Handle GET for stats
-      const response = await fetch(GOOGLE_SCRIPT_URL);
+      // Handle GET for stats (forwarding query params)
+      const url = new URL(request.url);
+      const response = await fetch(GOOGLE_SCRIPT_URL + url.search);
       const result = await response.json();
       return new Response(JSON.stringify(result), {
         headers: { "Content-Type": "application/json" }

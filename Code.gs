@@ -12,9 +12,20 @@
 
 function doGet(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+    var cache = CacheService.getScriptCache();
+    var cached = cache.get("migration_stats");
+    if (cached != null) {
+      return ContentService.createTextOutput(cached).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheets()[0];
     var data = sheet.getDataRange().getValues();
     
+    var headers = data[0];
+    var colorIndex = headers.indexOf("移民の色");
+    if (colorIndex === -1) colorIndex = 6;
+
     var stats = {
       total: 0,
       Gold: 0,
@@ -23,21 +34,20 @@ function doGet(e) {
       White: 0
     };
     
-    // Header is row 0
     if (data.length > 1) {
       stats.total = data.length - 1;
-      
-      // Column index for Migration Color is 6 (0-indexed)
-      // Headers: ["タイムスタンプ", "言語", "ゲーム内名前", "現在のサーバー", "現在の同盟", "英雄総戦力 (M)", "移民の色", ...]
       for (var i = 1; i < data.length; i++) {
-        var color = data[i][6];
+        var color = data[i][colorIndex];
         if (stats.hasOwnProperty(color)) {
           stats[color]++;
         }
       }
     }
     
-    return ContentService.createTextOutput(JSON.stringify(stats))
+    var result = JSON.stringify(stats);
+    cache.put("migration_stats", result, 120);
+    
+    return ContentService.createTextOutput(result)
       .setMimeType(ContentService.MimeType.JSON);
     
   } catch (error) {
@@ -74,6 +84,9 @@ function doPost(e) {
     ]);
     
     var result = { status: 'success' };
+    // Clear cache to force refresh on next gauge update
+    CacheService.getScriptCache().remove("migration_stats");
+
     return ContentService.createTextOutput(JSON.stringify(result))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
