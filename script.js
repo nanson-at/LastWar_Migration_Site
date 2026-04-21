@@ -12,7 +12,7 @@ const i18n = {
         alliance: "Current Alliance *",
         heroPower: "Total Hero Power (M) *",
         migrationColor: "Migration Color *",
-        migrationPoints: "Migration Points *",
+        migrationPoints: "Migration Points (optional)",
         hqLevel: "HQ Level *",
         remarks: "Remarks / Notes",
         submit: "SUBMIT APPLICATION",
@@ -29,7 +29,11 @@ const i18n = {
         purpleTier: "PURPLE SEATS",
         blueTier: "BLUE SEATS",
         whiteTier: "WHITE SEATS",
-        intelFooter: "REAL-TIME INTEL FROM SECTOR 561"
+        intelFooter: "REAL-TIME INTEL FROM SECTOR 561",
+        popupTitle: "Migration Points Info",
+        popupText: "If you don't know the score, you can enter 0",
+        heroPowerPopupTitle: "Hero Power Info",
+        heroPowerPopupText: "Please enter your total hero power value"
     },
     ja: {
         title: "SS6-移民申請フォーム",
@@ -39,7 +43,7 @@ const i18n = {
         alliance: "現在の同盟 *",
         heroPower: "英雄総戦力 (M) *",
         migrationColor: "移民の色 *",
-        migrationPoints: "移民スコア *",
+        migrationPoints: "移民スコア (任意)",
         hqLevel: "基地レベル *",
         remarks: "備考",
         submit: "申請を送信する",
@@ -56,7 +60,11 @@ const i18n = {
         purpleTier: "紫色枠",
         blueTier: "青色枠",
         whiteTier: "白色枠",
-        intelFooter: "サーバー561のリアルタイム情報"
+        intelFooter: "サーバー561のリアルタイム情報",
+        popupTitle: "移民スコア説明",
+        popupText: "スコアが分からない場合は、0を入力できます",
+        heroPowerPopupTitle: "英雄総戦力説明",
+        heroPowerPopupText: "英雄総戦力の数値を入力してください"
     },
     zh: {
         title: "SS6-移民申請表",
@@ -66,7 +74,7 @@ const i18n = {
         alliance: "現所屬同盟 *",
         heroPower: "英雄總戰力 (M) *",
         migrationColor: "移民顏色 *",
-        migrationPoints: "移民分數 *",
+        migrationPoints: "移民分數 (選填)",
         hqLevel: "總部等級 *",
         remarks: "備註",
         submit: "提交申請",
@@ -83,7 +91,11 @@ const i18n = {
         purpleTier: "紫色名額",
         blueTier: "藍色名額",
         whiteTier: "白色名額",
-        intelFooter: "來自 561 伺服器的實時資訊"
+        intelFooter: "來自 561 伺服器的實時資訊",
+        popupTitle: "移民分數說明",
+        popupText: "如不知道分數, 可以輸入0",
+        heroPowerPopupTitle: "英雄總戰力說明",
+        heroPowerPopupText: "請輸入您的英雄總戰力數值"
     },
     ko: {
         title: "SS6-이민 신청서",
@@ -93,7 +105,7 @@ const i18n = {
         alliance: "현 소속 연맹 *",
         heroPower: "영웅 총 전투력 (M) *",
         migrationColor: "이민 색상 *",
-        migrationPoints: "이민 점수 *",
+        migrationPoints: "이민 점수 (선택)",
         hqLevel: "본부 레벨 *",
         remarks: "비고",
         submit: "신청서 제출",
@@ -110,7 +122,11 @@ const i18n = {
         purpleTier: "퍼플",
         blueTier: "블루",
         whiteTier: "화이트",
-        intelFooter: "561 서버 실시간 정보"
+        intelFooter: "561 서버 실시간 정보",
+        popupTitle: "이민 점수 설명",
+        popupText: "점수를 모르는 경우 0을 입력할 수 있습니다",
+        heroPowerPopupTitle: "영웅 총 전투력 설명",
+        heroPowerPopupText: "영웅 총 전투력 수치를 입력해 주세요"
     },
     th: {
         title: "SS6-แบบ폼ย้ายเซิร์ฟเวอร์",
@@ -120,7 +136,7 @@ const i18n = {
         alliance: "พันธมิตรปัจจุบัน *",
         heroPower: "พลังฮีโร่รวม (M) *",
         migrationColor: "สีการย้าย *",
-        migrationPoints: "คะแนนการย้าย *",
+        migrationPoints: "คะแนนการย้าย (ไม่จำเป็น)",
         hqLevel: "เลเวลกองบัญชาการ *",
         remarks: "หมายเหตุ",
         submit: "ส่งใบสมัคร",
@@ -137,7 +153,11 @@ const i18n = {
         purpleTier: "สีม่วง",
         blueTier: "สีฟ้า",
         whiteTier: "สีขาว",
-        intelFooter: "ข้อมูลเรียลไทม์จากเซิร์ฟเวอร์ 561"
+        intelFooter: "ข้อมูลเรียลไทม์จากเซิร์ฟเวอร์ 561",
+        popupTitle: "คะแนนการย้ายอธิบาย",
+        popupText: "หากไม่ทราบคะแนนสามารถป้อน 0 ได้",
+        heroPowerPopupTitle: "พลังฮีโร่รวมอธิบาย",
+        heroPowerPopupText: "กรุณาป้อนค่าพลังฮีโร่รวมของคุณ"
     }
 };
 
@@ -158,9 +178,15 @@ function setLanguage(lang) {
     document.getElementById('lbl-nickname').textContent = t.nickname;
     document.getElementById('lbl-server').textContent = t.server;
     document.getElementById('lbl-alliance').textContent = t.alliance;
-    document.getElementById('lbl-heroPower').textContent = t.heroPower;
+    const heroPowerText = document.getElementById('heroPowerText');
+    if (heroPowerText) {
+        heroPowerText.textContent = t.heroPower;
+    }
     document.getElementById('lbl-migrationColor').textContent = t.migrationColor;
-    document.getElementById('lbl-migrationPoints').textContent = t.migrationPoints;
+    const migrationPointsText = document.getElementById('migrationPointsText');
+    if (migrationPointsText) {
+        migrationPointsText.textContent = t.migrationPoints;
+    }
     document.getElementById('lbl-hqLevel').textContent = t.hqLevel;
     document.getElementById('lbl-remarks').textContent = t.remarks;
     document.getElementById('btn-submit').textContent = t.submit;
@@ -177,6 +203,22 @@ function setLanguage(lang) {
     document.getElementById('lbl-white').textContent = t.whiteTier;
     document.getElementById('lbl-footer-intel').textContent = t.intelFooter;
     document.getElementById('lbl-floating-desc').textContent = t.totalApps;
+
+    // Popup translations
+    const popupTitle = document.getElementById('popup-title');
+    const popupText = document.getElementById('popup-text');
+    if (popupTitle && popupText) {
+        popupTitle.textContent = t.popupTitle;
+        popupText.textContent = t.popupText;
+    }
+
+    // Hero Power Popup translations
+    const heroPowerPopupTitle = document.getElementById('heroPowerPopup-title');
+    const heroPowerPopupText = document.getElementById('heroPowerPopup-text');
+    if (heroPowerPopupTitle && heroPowerPopupText) {
+        heroPowerPopupTitle.textContent = t.heroPowerPopupTitle;
+        heroPowerPopupText.textContent = t.heroPowerPopupText;
+    }
 
     // Placeholders
     document.getElementById('nickname').placeholder = t.placeholder_nickname;
@@ -241,6 +283,50 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.classList.remove('open');
         }
     });
+
+    // Migration Points Info Popup
+    const migrationPointsInfo = document.getElementById('migrationPointsInfo');
+    const migrationPointsPopup = document.getElementById('migrationPointsPopup');
+    const popupClose = migrationPointsPopup.querySelector('.popup-close');
+
+    if (migrationPointsInfo && migrationPointsPopup) {
+        migrationPointsInfo.addEventListener('click', () => {
+            migrationPointsPopup.classList.add('active');
+        });
+
+        popupClose.addEventListener('click', () => {
+            migrationPointsPopup.classList.remove('active');
+        });
+
+        // Close on outside click (click popup background)
+        migrationPointsPopup.addEventListener('click', (e) => {
+            if (e.target === migrationPointsPopup) {
+                migrationPointsPopup.classList.remove('active');
+            }
+        });
+    }
+
+    // Hero Power Info Popup
+    const heroPowerInfo = document.getElementById('heroPowerInfo');
+    const heroPowerPopup = document.getElementById('heroPowerPopup');
+    const heroPowerPopupClose = heroPowerPopup.querySelector('.popup-close');
+
+    if (heroPowerInfo && heroPowerPopup) {
+        heroPowerInfo.addEventListener('click', () => {
+            heroPowerPopup.classList.add('active');
+        });
+
+        heroPowerPopupClose.addEventListener('click', () => {
+            heroPowerPopup.classList.remove('active');
+        });
+
+        // Close on outside click (click popup background)
+        heroPowerPopup.addEventListener('click', (e) => {
+            if (e.target === heroPowerPopup) {
+                heroPowerPopup.classList.remove('active');
+            }
+        });
+    }
 
     const limits = {
         Gold: 1,

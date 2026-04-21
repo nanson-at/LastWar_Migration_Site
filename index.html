@@ -121,7 +121,7 @@
 
                 <div class="grid-2">
                     <div class="input-group">
-                        <label for="heroPower" id="lbl-heroPower">Total Hero Power (M) *</label>
+                        <label for="heroPower" id="lbl-heroPower"><span id="heroPowerText">Total Hero Power (M) *</span> <span class="info-icon" id="heroPowerInfo">i</span></label>
                         <input type="text" id="heroPower" name="heroPower" required placeholder="e.g. 50M">
                     </div>
                     <div class="input-group">
@@ -138,8 +138,8 @@
 
                 <div class="grid-2">
                     <div class="input-group">
-                        <label for="migrationPoints" id="lbl-migrationPoints">Migration Points *</label>
-                        <input type="number" id="migrationPoints" name="migrationPoints" required
+                        <label for="migrationPoints" id="lbl-migrationPoints"><span id="migrationPointsText">Migration Points</span> <span class="info-icon" id="migrationPointsInfo">i</span></label>
+                        <input type="number" id="migrationPoints" name="migrationPoints"
                             placeholder="Points required">
                     </div>
                     <div class="input-group">
@@ -163,6 +163,42 @@
     <footer>
         <p>&copy; 2026 LAST WAR S561 RUN x HUG Recruitment Portal</p>
     </footer>
+
+    <!-- Migration Points Info Popup -->
+    <div id="migrationPointsPopup" class="info-popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3 id="popup-title">移民分數說明</h3>
+                <button class="popup-close">&times;</button>
+            </div>
+            <div class="popup-body">
+                <div class="popup-image">
+                    <img src="score.png" alt="Score Example">
+                </div>
+                <div class="popup-text">
+                    <p id="popup-text">如不知道分數, 可以輸入0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Power Info Popup -->
+    <div id="heroPowerPopup" class="info-popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3 id="heroPowerPopup-title">英雄總戰力說明</h3>
+                <button class="popup-close">&times;</button>
+            </div>
+            <div class="popup-body">
+                <div class="popup-image">
+                    <img src="power.png" alt="Power Example">
+                </div>
+                <div class="popup-text">
+                    <p id="heroPowerPopup-text">請輸入您的英雄總戰力數值</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
